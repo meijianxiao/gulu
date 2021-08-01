@@ -3,18 +3,20 @@ import Button from './button'
 import Icon from "./icon";
 import ButtonGroup from './button-group'
 import chai from 'chai'
-const expect = chai.expect
+import spies from 'chai-spies'
 
+const expect = chai.expect
+chai.use(spies)
 Vue.component('g-button', Button)
 Vue.component('g-icon', Icon)
-Vue.component('g-button-group',ButtonGroup)
+Vue.component('g-button-group', ButtonGroup)
 
 new Vue({
     el: '#app',
-    data:{
-        loading1:false,
-        loading2:false,
-        loading3:false,
+    data: {
+        loading1: false,
+        loading2: false,
+        loading3: false,
     }
 })
 
@@ -22,8 +24,8 @@ new Vue({
 {
     const Constructor = Vue.extend(Button)
     const vm = new Constructor({
-        propsData:{
-            icon:'settings'
+        propsData: {
+            icon: 'settings'
         }
     })
     vm.$mount()
@@ -36,9 +38,9 @@ new Vue({
 {
     const Constructor = Vue.extend(Button)
     const vm = new Constructor({
-        propsData:{
-            icon:'settings',
-            loading:true
+        propsData: {
+            icon: 'settings',
+            loading: true
         }
     })
     vm.$mount()
@@ -53,8 +55,8 @@ new Vue({
     document.body.appendChild(div)
     const Constructor = Vue.extend(Button)
     const vm = new Constructor({
-        propsData:{
-            icon:'settings',
+        propsData: {
+            icon: 'settings',
         }
     })
     vm.$mount(div)
@@ -69,9 +71,9 @@ new Vue({
     document.body.appendChild(div)
     const Constructor = Vue.extend(Button)
     const vm = new Constructor({
-        propsData:{
-            icon:'settings',
-            iconPosition:'right'
+        propsData: {
+            icon: 'settings',
+            iconPosition: 'right'
         }
     })
     vm.$mount(div)
@@ -85,14 +87,15 @@ new Vue({
     // mock
     const Constructor = Vue.extend(Button)
     const vm = new Constructor({
-        propsData:{
-            icon:'settings',
+        propsData: {
+            icon: 'settings',
         }
     })
     vm.$mount()
-    vm.$on('click',function (){
-        expect(1).to.eq(1)
+    let spy = chai.spy(function () {
     })
+    vm.$on('click', spy)
     let button = vm.$el
     button.click()
+    expect(spy).to.have.been.called()
 }
