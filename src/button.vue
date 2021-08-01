@@ -3,7 +3,7 @@
     <svg v-if="icon" class="icon">
       <use :xlink:href="`#i${icon}`"></use>
     </svg>
-    <span  class="content">
+    <span class="content">
       <slot></slot>
     </span>
   </button>
@@ -11,42 +11,62 @@
 
 <script lang="ts">
 export default {
-  props:['icon','iconPosition']
+  props: {
+    icon: {},
+    iconPosition: {
+      type: String,
+      default: 'left',
+      validator(value): boolean {
+        return !(value !== 'left' && value !== 'right');
+      }
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.g-button{
+.g-button {
   font-size: var(--font-size);
-  height:var(--button-height);
-  padding:0 1em;
-  border-radius:var(--border-radius);
-  border:1px solid  var(--border-color);
-  background:var(--button-bg);
+  height: var(--button-height);
+  padding: 0 1em;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  background: var(--button-bg);
   display: inline-flex;
   justify-content: center;
   align-items: center;
   vertical-align: middle;
-  &:hover{
-    border-color:var(--border-color-hover)
+
+  &:hover {
+    border-color: var(--border-color-hover)
   }
-  &:active{
-    background-color:var(--button-active-bg)
+
+  &:active {
+    background-color: var(--button-active-bg)
   }
-  &:focus{
+
+  &:focus {
     outline: none;
   }
-  > .icon{
-    order:1;margin-right: .1em;margin-left: 0;
+
+  > .icon {
+    order: 1;
+    margin-right: .1em;
+    margin-left: 0;
   }
-  > .content{
+
+  > .content {
     order: 2;
   }
-  &.icon-right{
-    > .icon{
-      order:2;margin-left: .1em;margin-right: 0;
+
+  &.icon-right {
+    > .icon {
+      order: 2;
+      margin-left: .1em;
+      margin-right: 0;
     }
-    > .content{
+
+    > .content {
       order: 1;
     }
   }
