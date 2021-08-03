@@ -10,7 +10,12 @@
 </template>
 
 <script>
+import Icon from "./icon";
 export default {
+  name:'GuluButton',
+  components:{
+    'g-icon':Icon
+  },
   props: {
     icon: {},
     loading:{

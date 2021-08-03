@@ -1,15 +1,13 @@
 import Vue from 'vue'
 import Button from './button'
-import Icon from "./icon";
+import Icon from "./svg";
 import ButtonGroup from './button-group'
-import chai from 'chai'
-import spies from 'chai-spies'
+import Input from './input'
 
-const expect = chai.expect
-chai.use(spies)
 Vue.component('g-button', Button)
 Vue.component('g-icon', Icon)
 Vue.component('g-button-group', ButtonGroup)
+Vue.component('g-input',Input)
 
 new Vue({
     el: '#app',
@@ -19,83 +17,3 @@ new Vue({
         loading3: false,
     }
 })
-
-// 单元测试
-{
-    const Constructor = Vue.extend(Button)
-    const vm = new Constructor({
-        propsData: {
-            icon: 'settings'
-        }
-    })
-    vm.$mount()
-    let userElement = vm.$el.querySelector('use')
-    let href = userElement.getAttribute('xlink:href')
-    expect(href).to.eq('#isettings')
-    vm.$el.remove()
-    vm.$destroy()
-}
-{
-    const Constructor = Vue.extend(Button)
-    const vm = new Constructor({
-        propsData: {
-            icon: 'settings',
-            loading: true
-        }
-    })
-    vm.$mount()
-    let userElement = vm.$el.querySelector('use')
-    let href = userElement.getAttribute('xlink:href')
-    expect(href).to.eq('#iloading')
-    vm.$el.remove()
-    vm.$destroy()
-}
-{
-    const div = document.createElement('div')
-    document.body.appendChild(div)
-    const Constructor = Vue.extend(Button)
-    const vm = new Constructor({
-        propsData: {
-            icon: 'settings',
-        }
-    })
-    vm.$mount(div)
-    let svg = vm.$el.querySelector('svg')
-    let {order} = window.getComputedStyle(svg)
-    expect(order).to.eq('1')
-    vm.$el.remove()
-    vm.$destroy()
-}
-{
-    const div = document.createElement('div')
-    document.body.appendChild(div)
-    const Constructor = Vue.extend(Button)
-    const vm = new Constructor({
-        propsData: {
-            icon: 'settings',
-            iconPosition: 'right'
-        }
-    })
-    vm.$mount(div)
-    let svg = vm.$el.querySelector('svg')
-    let {order} = window.getComputedStyle(svg)
-    expect(order).to.eq('2')
-    vm.$el.remove()
-    vm.$destroy()
-}
-{
-    // mock
-    const Constructor = Vue.extend(Button)
-    const vm = new Constructor({
-        propsData: {
-            icon: 'settings',
-        }
-    })
-    vm.$mount()
-    let spy = chai.spy(function () {
-    })
-    vm.$on('click', spy)
-    let button = vm.$el
-    button.click()
-    expect(spy).to.have.been.called()
-}
