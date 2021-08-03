@@ -39,7 +39,7 @@
 <div id="app">
     <g-input value="周杰伦" readonly></g-input>
     <g-input value="林俊杰"></g-input>
-    <g-input value="潘玮柏" error="嚯嚯嚯"></g-input>
+    <g-input value="潘玮柏" @change="inputChange"></g-input>
 
     <div>
         <g-button :loading="loading1" @click="loading1 = !loading1">
