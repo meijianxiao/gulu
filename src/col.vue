@@ -23,10 +23,6 @@ export default {
     offset: {
       type: [Number, String]
     },
-    phone:{
-      type:Object,
-      validator,
-    },
     ipad:{
       type:Object,
       validator,
@@ -52,7 +48,7 @@ export default {
   computed: {
     colClass(){
       let phoneClass = []
-      return [ this.span && `col-${this.span}`,this.offset && `offset-${this.offset}`,...(this.phone && [`col-phone-${this.phone.span}`]),
+      return [ this.span && `col-${this.span}`,this.offset && `offset-${this.offset}`,
         ...(this.ipad && [`col-ipad-${this.ipad.span}`]),
         ...(this.narrowPc && [`col-narrowPc-${this.narrowPc.span}`]),
         ...(this.pc && [`col-pc-${this.pc.span}`]),
@@ -70,6 +66,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .col {
+
   $class: col-;
   @for $n from 1 through 24 {
     &.#{$class}#{$n} {
@@ -83,22 +80,7 @@ export default {
       margin-left: ($n / 24) * 100%;
     }
   }
-  @media (max-width:576px) {
-    $class: col-phone-;
-    @for $n from 1 through 24 {
-      &.#{$class}#{$n} {
-        width: ($n / 24) * 100%;
-      }
-    }
-
-    $class: offset-phone-;
-    @for $n from 1 through 24 {
-      &.#{$class}#{$n} {
-        margin-left: ($n / 24) * 100%;
-      }
-    }
-  }
-  @media (min-width:577px) and(max-width: 768px) {
+  @media (min-width:577px) {
     $class: col-ipad-;
     @for $n from 1 through 24 {
       &.#{$class}#{$n} {
@@ -113,7 +95,7 @@ export default {
       }
     }
   }
-  @media (min-width:769px) and(max-width: 992px) {
+  @media (min-width:769px){
     $class: col-narrow-pc-;
     @for $n from 1 through 24 {
       &.#{$class}#{$n} {
@@ -128,7 +110,7 @@ export default {
       }
     }
   }
-  @media (min-width:993px) and(max-width: 1200px) {
+  @media (min-width:993px){
     $class: col-pc-;
     @for $n from 1 through 24 {
       &.#{$class}#{$n} {
