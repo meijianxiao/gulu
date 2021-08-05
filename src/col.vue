@@ -1,14 +1,14 @@
 <template>
   <div class="col" :class="colClass" :style="colStyle">
-      <slot></slot>
-    </div>
+    <slot></slot>
+  </div>
 </template>
 <script>
-let validator = (value)=>{
+let validator = (value) => {
   let keys = Object.keys(value)
-  let valid =  true
-  keys.forEach(key =>{
-    if(!['span','offset'].includes(key)){
+  let valid = true
+  keys.forEach(key => {
+    if (!['span', 'offset'].includes(key)) {
       valid = false
     }
   })
@@ -23,20 +23,20 @@ export default {
     offset: {
       type: [Number, String]
     },
-    ipad:{
-      type:Object,
+    ipad: {
+      type: Object,
       validator,
     },
-    narrowPc:{
-      type:Object,
+    narrowPc: {
+      type: Object,
       validator,
     },
-    pc:{
-      type:Object,
+    pc: {
+      type: Object,
       validator,
     },
-    widePc:{
-      type:Object,
+    widePc: {
+      type: Object,
       validator,
     }
   },
@@ -45,16 +45,34 @@ export default {
       gutter: 0
     }
   },
+  methods: {
+    createClasses(obj, str = '') {
+      if (!obj) {
+        return []
+      }
+      let array = []
+      if (obj.span) {
+        array.push(`col-${str}${obj.span}`)
+      }
+      if (obj.offset) {
+        array.push(`offset-${str}${obj.offset}`)
+      }
+      return array
+    }
+  },
   computed: {
-    colClass(){
-      let phoneClass = []
-      return [ this.span && `col-${this.span}`,this.offset && `offset-${this.offset}`,
-        ...(this.ipad && [`col-ipad-${this.ipad.span}`]),
-        ...(this.narrowPc && [`col-narrowPc-${this.narrowPc.span}`]),
-        ...(this.pc && [`col-pc-${this.pc.span}`]),
-        ...(this.widePc && [`col-widePc-${this.widePc.span}`])]
+    colClass() {
+      let {span, offset, ipad, narrowPc, pc, widePc} = this
+      let createClasses = this.createClasses
+      return [
+        ...createClasses({span, offset}),
+        ...createClasses(ipad, 'ipad-'),
+        ...createClasses(narrowPc, 'narrow-pc-'),
+        ...createClasses(pc, 'pc-'),
+        ...createClasses(widePc, 'wide-pc-'),
+      ]
     },
-    colStyle(){
+    colStyle() {
       return {
         paddingLeft: this.gutter / 2 + 'px',
         paddingRight: this.gutter / 2 + 'px'
@@ -80,7 +98,7 @@ export default {
       margin-left: ($n / 24) * 100%;
     }
   }
-  @media (min-width:577px) {
+  @media (min-width: 577px) {
     $class: col-ipad-;
     @for $n from 1 through 24 {
       &.#{$class}#{$n} {
@@ -95,7 +113,7 @@ export default {
       }
     }
   }
-  @media (min-width:769px){
+  @media (min-width: 769px) {
     $class: col-narrow-pc-;
     @for $n from 1 through 24 {
       &.#{$class}#{$n} {
@@ -110,7 +128,7 @@ export default {
       }
     }
   }
-  @media (min-width:993px){
+  @media (min-width: 993px) {
     $class: col-pc-;
     @for $n from 1 through 24 {
       &.#{$class}#{$n} {
@@ -125,7 +143,7 @@ export default {
       }
     }
   }
-  @media (min-width:1201px){
+  @media (min-width: 1201px) {
     $class: col-wide-pc-;
     @for $n from 1 through 24 {
       &.#{$class}#{$n} {
