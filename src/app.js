@@ -39,6 +39,8 @@ new Vue({
     methods: {
         showToast() {
             this.$toast('很字', {
+                    position: 'middle',
+                autoClose:false,
                     closeButton: {
                         text: '关闭',
                         callback() {
