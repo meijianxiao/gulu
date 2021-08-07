@@ -84,7 +84,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .col {
-
   $class: col-;
   @for $n from 1 through 24 {
     &.#{$class}#{$n} {
