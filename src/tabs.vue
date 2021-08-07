@@ -32,11 +32,14 @@ export default {
     }
   },
   mounted() {
+    if(this.$children.length === 0){
+      console && console.warn &&
+      console.warn('tabs 的子组件应该是 tabs-head 和 tabs-nav,但是你没有写子组件')
+    }
     this.$children.forEach((vm)=>{
       if(vm.$options.name==='GuluTabsHead'){
         vm.$children.forEach((childVm)=>{
           if(childVm.$options.name === 'GuluTabsItem' && childVm.$props.name ===this.selected){
-            console.log(childVm.$el)
             this.eventBus.$emit('update:selected',this.selected,childVm)
           }
         })
