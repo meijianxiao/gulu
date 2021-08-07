@@ -1,60 +1,71 @@
 <template>
-  <div class="tabs-item" @click="xxx" :class="classes">
+  <div class="tabs-item" @click="onClick" :class="classes">
     <slot></slot>
   </div>
 </template>
 
 <script>
 export default {
-  name:'GuluTabsItem',
-  inject:['eventBus'],
-  data(){
+  name: 'GuluTabsItem',
+  inject: ['eventBus'],
+  data() {
     return {
-      active:false
+      active: false
     }
   },
-  props:{
-    name:{
-      type:[String,Number],
-      required:true
+  props: {
+    name: {
+      type: [String, Number],
+      required: true
     },
-    disabled:{
-      type:Boolean,
-      default:false
+    disabled: {
+      type: Boolean,
+      default: false
     }
 
   },
-  computed:{
-    classes(){
+  computed: {
+    classes() {
       return {
-        active:this.active
+        active: this.active,
+        disabled: this.disabled
       }
     }
   },
   created() {
-    this.eventBus.$on('update:selected',(name)=>{
+    this.eventBus.$on('update:selected', (name) => {
       this.active = name === this.name;
     })
   },
-  methods:{
-    xxx(){
-      this.eventBus.$emit('update:selected',this.name)
+  methods: {
+    onClick() {
+      if (this.disabled) {
+        return
+      }
+      this.eventBus.$emit('update:selected', this.name, this)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.tabs-item{
+$blue: blue;
+$disabled-text-color:grey;
+.tabs-item {
   flex-shrink: 0;
   padding: 0 2em;
   cursor: pointer;
   height: 100%;
   display: flex;
+  border: 1px solid red;
   align-items: center;
 
-  &.active{
-    background: red;
+  &.active {
+    color: $blue;
+    font-weight: bold;
+  }
+  &.disabled{
+    color:$disabled-text-color;
   }
 }
 </style>
