@@ -7,7 +7,12 @@
 
 <script>
 export default {
-  name:'GuluTabsHead'
+  name:'GuluTabsHead',
+  inject:['eventBus'],
+  created() {
+    console.log('爷爷给 head 的')
+    console.log(this.eventBus)
+  }
 }
 </script>
 
