@@ -32,8 +32,7 @@ export default {
     }
   },
   created() {
-    console.log('爷爷给 爸爸 的')
-    console.log(this.eventBus)
+
   }
 }
 </script>

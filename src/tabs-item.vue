@@ -1,5 +1,5 @@
 <template>
-  <div class="tabs-item" @click="xxx">
+  <div class="tabs-item" @click="xxx" :class="classes">
     <slot></slot>
   </div>
 </template>
@@ -8,6 +8,11 @@
 export default {
   name:'GuluTabsItem',
   inject:['eventBus'],
+  data(){
+    return {
+      active:false
+    }
+  },
   props:{
     name:{
       type:[String,Number],
@@ -19,11 +24,16 @@ export default {
     }
 
   },
+  computed:{
+    classes(){
+      return {
+        active:this.active
+      }
+    }
+  },
   created() {
-    console.log('爷爷给 item 的')
-    console.log(this.eventBus)
     this.eventBus.$on('update:selected',(name)=>{
-      console.log(name)
+      this.active = name === this.name;
     })
   },
   methods:{
@@ -36,6 +46,10 @@ export default {
 
 <style lang="scss" scoped>
 .tabs-item{
-
+  flex-shrink: 0;
+  padding: 0 2em;
+  &.active{
+    background: red;
+  }
 }
 </style>
