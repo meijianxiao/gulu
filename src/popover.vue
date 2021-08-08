@@ -31,25 +31,28 @@ export default {
     positionContent() {
       const {contentWrapper, triggerWrapper} = this.$refs
       document.body.appendChild(contentWrapper)
-      let {width, height, top, left} = triggerWrapper.getBoundingClientRect()
-      if (this.position === 'top') {
-        contentWrapper.style.left = left + window.screenX + 'px'
-        contentWrapper.style.top = top + window.screenY + 'px'
-      } else if (this.position === 'bottom') {
-        contentWrapper.style.left = left + window.screenX + 'px'
-        contentWrapper.style.top = top + height + window.screenY + 'px'
-      } else if (this.position === 'left') {
-        contentWrapper.style.left = left + window.screenX + 'px'
-        let {height: height2} = contentWrapper.getBoundingClientRect()
-        contentWrapper.style.top = top + window.screenY +
-            (height - height2) / 2 + 'px'
-      } else if (this.position === 'right') {
-        contentWrapper.style.left = left + window.screenX + width + 'px'
-        let {height: height2} = contentWrapper.getBoundingClientRect()
-        contentWrapper.style.top = top + window.screenY +
-            (height - height2) / 2 + 'px'
+      const {width, height, top, left} = triggerWrapper.getBoundingClientRect()
+      const {height: height2} = contentWrapper.getBoundingClientRect()
+      let positions = {
+        top: {
+          left: left + window.screenX,
+          top: top + window.screenY,
+        },
+        bottom: {
+          left: left + window.screenX,
+          top: top + height + window.screenY,
+        },
+        left: {
+          left: left + window.screenX,
+          top: top + window.screenY + (height - height2) / 2,
+        },
+        right: {
+          left: left + window.screenX + width,
+          top: top + window.screenY + (height - height2) / 2,
+        },
       }
-
+      contentWrapper.style.left = positions[this.position].left + 'px'
+      contentWrapper.style.top = positions[this.position].top + 'px'
     },
     listenToDocument() {
       document.addEventListener('click', this.onClickDocument)
@@ -161,25 +164,31 @@ $border-radius: 4px;
       transform: translateY(-50%);
       top: 50%
     }
+
     &::before {
       border-left-color: black;
       left: 100%;
     }
+
     &::after {
       border-left-color: white;
       left: calc(100% - 1px)
     }
   }
+
   &.position-right {
     margin-left: 10px;
+
     &::before, &::after {
       transform: translateY(-50%);
       top: 50%
     }
+
     &::before {
       border-right-color: black;
       right: 100%;
     }
+
     &::after {
       border-right-color: white;
       right: calc(100% - 1px)
