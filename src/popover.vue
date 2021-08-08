@@ -1,9 +1,9 @@
 <template>
-  <div class="popover" @click.stop="xxx">
-    <div  ref="contentWrapper" class="content-wrapper" v-if="visible" @click.stop>
+  <div class="popover" @click.stop="onClick" ref="popover">
+    <div ref="contentWrapper" class="content-wrapper" v-if="visible" @click.stop>
       <slot name="content"></slot>
     </div>
-    <span ref="triggerWrapper" >
+    <span ref="triggerWrapper">
           <slot></slot>
     </span>
   </div>
@@ -18,21 +18,39 @@ export default {
     }
   },
   methods: {
-    xxx() {
-      this.visible = !this.visible
-      if (this.visible === true) {
-        this.$nextTick(() => {
-          document.body.appendChild(this.$refs.contentWrapper)
-          let {width,height,top,left} =this.$refs.triggerWrapper.getBoundingClientRect()
-          this.$refs.contentWrapper.style.left = left + window.screenX + 'px'
-          this.$refs.contentWrapper.style.top =  top + window.screenY+ 'px'
-          let eventHandler = () => {
-            this.visible = false
-            document.removeEventListener('click', eventHandler)
-
-          }
-          document.addEventListener('click', eventHandler)
-        })
+    positionContent() {
+      document.body.appendChild(this.$refs.contentWrapper)
+      let {width, height, top, left} = this.$refs.triggerWrapper.getBoundingClientRect()
+      this.$refs.contentWrapper.style.left = left + window.screenX + 'px'
+      this.$refs.contentWrapper.style.top = top + window.screenY + 'px'
+    },
+    listenToDocument() {
+      document.addEventListener('click', this.onClickDocument)
+    },
+    onClickDocument(e) {
+      if (!(this.$refs.popover &&
+          (this.$refs.popover === e.target || this.$refs.popover.contains(e.target)))) {
+        this.close()
+      }
+    },
+    close() {
+      this.visible = false
+      document.removeEventListener('click', this.onClickDocument)
+    },
+    open() {
+      this.visible = true
+      this.$nextTick(() => {
+        this.positionContent()
+        this.listenToDocument()
+      })
+    },
+    onClick(event) {
+      if (this.$refs.triggerWrapper && this.$refs.triggerWrapper.contains(event.target)) {
+        if (this.visible === true) {
+          this.close()
+        } else {
+          this.open()
+        }
       }
     }
   }
@@ -47,6 +65,7 @@ export default {
 
 
 }
+
 .content-wrapper {
   position: absolute;
   border: 1px solid red;
