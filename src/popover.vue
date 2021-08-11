@@ -2,7 +2,7 @@
   <div class="popover" ref="popover">
     <div ref="contentWrapper" class="content-wrapper" v-if="visible"
          :class="{[`position-${position}`]:true}">
-      <slot name="content"></slot>
+      <slot name="content" :close="close"></slot>
     </div>
     <span ref="triggerWrapper" style="display: inline-block">
           <slot></slot>
@@ -19,21 +19,26 @@ export default {
     }
   },
   mounted() {
-    if (this.trigger === 'click') {
-      this.$refs.popover.addEventListener('click', this.onClick)
-
-    } else {
-      this.$refs.popover.addEventListener('mouseenter', this.open)
-      this.$refs.popover.addEventListener('mouseleave', this.close)
-    }
+    this.addPopoverListeners()
   },
-  destroyed() {
-    if (this.trigger === 'click') {
-      this.$refs.popover.removeEventListener('click', this.onClick)
-
-    } else {
-      this.$refs.popover.removeEventListener('mouseenter', this.open)
-      this.$refs.popover.removeEventListener('mouseleave', this.close)
+  beforeDestroy () {
+    this.putBackContent()
+    this.removePopoverListeners()
+  },
+  computed:{
+    openEvent () {
+      if (this.trigger === 'click') {
+        return 'click'
+      } else {
+        return 'mouseenter'
+      }
+    },
+    closeEvent () {
+      if (this.trigger === 'click') {
+        return 'click'
+      } else {
+        return 'mouseleave'
+      }
     }
   },
   props: {
@@ -53,6 +58,19 @@ export default {
     }
   },
   methods: {
+    removePopoverListeners(){
+      if (this.trigger === 'click') {
+        this.$refs.popover.removeEventListener('click', this.onClick)
+      } else {
+        this.$refs.popover.removeEventListener('mouseenter', this.open)
+        this.$refs.popover.removeEventListener('mouseleave', this.close)
+      }
+    },
+    putBackContent(){
+      const {contentWrapper, popover} = this.$refs
+      if(!contentWrapper){return}
+      popover.appendChild(contentWrapper)
+    },
     positionContent() {
       const {contentWrapper, triggerWrapper} = this.$refs
       document.body.appendChild(contentWrapper)
@@ -107,7 +125,15 @@ export default {
           this.open()
         }
       }
-    }
+    },
+    addPopoverListeners(){
+      if (this.trigger === 'click') {
+        this.$refs.popover.addEventListener('click', this.onClick)
+      } else {
+        this.$refs.popover.addEventListener('mouseenter', this.open)
+        this.$refs.popover.addEventListener('mouseleave', this.close)
+      }
+    },
   }
 }
 </script>

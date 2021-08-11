@@ -35,11 +35,11 @@
 
 2. 安装 gulu
     ```
-    npm i --save meijianxiao-test
+    npm i --save meijianxiao-gulu
     ```
 3. 引入 gulu
     ```
-    import {Button,ButtonGroup,Icon} from 'meijianxiao-test'
+    import {Button,ButtonGroup,Icon} from 'meijianxiao-gulu'
     import 'meijianxiao-test/dist/index.css'
     
     export default {

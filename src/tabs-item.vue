@@ -61,7 +61,6 @@ $disabled-text-color: grey;
   cursor: pointer;
   height: 100%;
   display: flex;
-  border: 1px solid red;
   align-items: center;
 
   &.active {
